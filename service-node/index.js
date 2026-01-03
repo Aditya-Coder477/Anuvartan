@@ -373,7 +373,10 @@ app.post('/api/chat/message', upload.single('image'), async (req, res) => {
             try {
 // NEW (Cloud - Dynamic)
 const AI_SERVICE_URL = process.env.AI_SERVICE_URL || 'http://localhost:8000';
-const aiRes = await axios.post(`${AI_SERVICE_URL}/predict/wound`, form...
+// SAFER VERSION: Using + instead of backticks
+const aiRes = await axios.post(AI_SERVICE_URL + '/predict/wound', form, {
+    headers: { ...form.getHeaders() }
+}
 );
 
             } catch (connErr) {
