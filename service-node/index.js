@@ -488,6 +488,7 @@ const aiRes = await axios.post(AI_SERVICE_URL + '/predict/wound', form, {
 });
 
 app.listen(PORT, () => {
-    console.log(`✅ Backend running on http://localhost:${PORT}`);
-    console.log(`📊 Mode: ${dbActive ? "PERSISTENT (Firestore)" : "IN-MEMORY (Fallback)"}`);
+    console.log("✅ Backend running on http://localhost:" + PORT);
+    console.log("📊 Mode: " + (dbActive ? "PERSISTENT (Firestore)" : "IN-MEMORY (Fallback)"));
 });
+
