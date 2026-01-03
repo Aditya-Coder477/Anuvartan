@@ -391,9 +391,17 @@ app.post('/api/chat/message', upload.single('image'), async (req, res) => {
             // Call Python AI Service
             let aiResponse;
             try {
-                aiResponse = await axios.post('http://localhost:8000/predict/wound', form, {
-                    headers: { ...form.getHeaders() }
-                });
+                aiResponse = await axios.post(
+    'https://anuvartan-intelli.onrender.com/predict/wound',
+    form,
+    {
+        headers: {
+            ...form.getHeaders()
+        },
+        timeout: 30000 // optional but recommended for Render
+    }
+);
+
             } catch (connErr) {
                 console.error("Python Service Error:", connErr.message);
                 return res.json({ response: "I'm having trouble analyzing the image right now (AI Service Offline). Please try text." });
