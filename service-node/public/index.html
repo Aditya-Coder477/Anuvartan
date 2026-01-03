@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backend Test Console</title>
+    <style>
+        body { font-family: sans-serif; max-width: 600px; margin: 2rem auto; padding: 0 1rem; }
+        .chat-box { border: 1px solid #ccc; height: 300px; overflow-y: auto; padding: 1rem; margin-bottom: 1rem; border-radius: 4px; background: #f9f9f9; }
+        .message { margin-bottom: 0.5rem; padding: 0.5rem; border-radius: 4px; }
+        .user { background: #e3f2fd; text-align: right; margin-left: 20%; }
+        .bot { background: #fff; border: 1px solid #eee; margin-right: 20%; }
+        .controls { display: flex; gap: 0.5rem; }
+        input[type="text"] { flex: 1; padding: 0.5rem; }
+        button { padding: 0.5rem 1rem; cursor: pointer; }
+        #fileInput { display: none; }
+        .upload-btn { background: #eee; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <h1>Backend Check-in Test</h1>
+    <p>Status: Node (5000) ✅ | Python (8000) ❓ (Checked via chat)</p>
+    
+    <div class="chat-box" id="chatBox">
+        <div class="message bot">System: Enter User ID to start.</div>
+    </div>
+
+    <div style="margin-bottom: 1rem;">
+        <label>User ID: <input type="text" id="userId" value="test-user-1" style="width: 100px;"></label>
+    </div>
+
+    <div class="controls">
+        <input type="text" id="messageInput" placeholder="Type a message (e.g., 'Hi')..." />
+        <input type="file" id="fileInput" accept="image/*" />
+        <button onclick="triggerUpload()" class="upload-btn" title="Upload Image">📷</button>
+        <button onclick="sendMessage()" style="background: #2196f3; color: white; border: none;">Send</button>
+    </div>
+
+    <script>
+        const chatBox = document.getElementById('chatBox');
+        const userIdInput = document.getElementById('userId');
+        const messageInput = document.getElementById('messageInput');
+        const fileInput = document.getElementById('fileInput');
+
+        function appendMessage(text, isUser, isSystem = false) {
+            const div = document.createElement('div');
+            div.className = `message ${isUser ? 'user' : 'bot'}`;
+            if (isSystem) div.style.fontStyle = 'italic';
+            div.textContent = text;
+            chatBox.appendChild(div);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function triggerUpload() {
+            fileInput.click();
+        }
+
+        async function sendMessage(file = null) {
+            const userId = userIdInput.value;
+            const text = messageInput.value.trim();
+
+            if (!userId) return alert("Please enter a User ID");
+            if (!text && !file) return;
+
+            const formData = new FormData();
+            formData.append('userId', userId);
+            
+            if (file) {
+                 formData.append('image', file);
+                 appendMessage(`[Uploading Image: ${file.name}]`, true);
+            } else {
+                 formData.append('message', text);
+                 appendMessage(text, true);
+                 messageInput.value = '';
+            }
+
+            try {
+                const res = await fetch('http://localhost:5000/api/chat/message', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await res.json();
+                appendMessage(data.response, false);
+            } catch (err) {
+                appendMessage("Error connecting to server.", false, true);
+                console.error(err);
+            }
+        }
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files[0]) {
+                sendMessage(e.target.files[0]);
+                fileInput.value = ''; // Reset
+            }
+        });
+
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+</body>
+</html>

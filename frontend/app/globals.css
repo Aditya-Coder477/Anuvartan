@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f0f4f8; /* dashboard-bg */
+  --foreground: #171717;
+  
+  /* Custom Theme Colors */
+  --color-dashboard-bg: #f0f4f8;
+  --color-primary-blue: #346ec9;
+  --color-primary-blue-hover: #2a5aa3;
+  --color-panel-blue: #dbeafe;
+  --color-alert-red: #e53e3e;
+  --color-alert-orange: #dd6b20;
+  --color-alert-green: #38a169;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  --color-dashboard-bg: var(--color-dashboard-bg);
+  --color-primary-blue: var(--color-primary-blue);
+  --color-primary-blue-hover: var(--color-primary-blue-hover);
+  --color-panel-blue: var(--color-panel-blue);
+  --color-alert-red: var(--color-alert-red);
+  --color-alert-orange: var(--color-alert-orange);
+  --color-alert-green: var(--color-alert-green);
+}
+
+
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+/* Custom Utilities */
+.soft-shadow {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+.left-panel-gradient {
+  background-color: #dbeafe;
+}
