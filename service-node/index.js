@@ -292,26 +292,6 @@ Track these to verify the model is working:
 
 ---
 
-## PART 2: MODELFILE FOR OLLAMA
-
-Save this as `Modelfile-anuvartan`:
-
-```dockerfile
-FROM llama3
-
-# Low temperature for rule-following behavior
-PARAMETER temperature 0.2
-PARAMETER top_p 0.8
-PARAMETER repeat_penalty 1.1
-
-# System prompt (the complete prompt from PART 1)
-SYSTEM """
-You are ANUVARTAN, a virtual triage nurse assistant for post-surgery recovery monitoring.
-
-[INSERT THE COMPLETE SYSTEM PROMPT FROM PART 1 HERE]
-"""
-`;
-
 // --- API ENDPOINTS ---
 
 // 1. GET ALL PATIENTS (Doctor Dashboard)
