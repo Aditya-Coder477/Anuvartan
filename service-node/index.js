@@ -414,7 +414,7 @@ const aiRes = await axios.post(AI_SERVICE_URL + '/predict/wound', form, {
                 // "wound_photos": admin.firestore.FieldValue.arrayUnion(newPhotoEntry)
             });
 
-            return res.json({ response: `I've analyzed the photo. It looks like ${status}. I've updated your chart.` });
+            return res.json({ response: "I have analyzed the photo. Status: " + status });
 
         } catch (error) {
             console.error("Image processing failed:", error);
