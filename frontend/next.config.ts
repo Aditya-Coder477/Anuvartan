@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: 'https://anuvartan-logic-sxiw.onrender.com/api/:path*',
+        destination: 'https://asdvbcv.onrender.com',
       },
     ]
   },
