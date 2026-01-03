@@ -364,7 +364,7 @@ app.post('/api/chat/message', upload.single('image'), async (req, res) => {
     // --- HANDLE IMAGE ---
     if (file) {
         try {
-            console.log(`Processing image for ${userId}...`);
+            console.log("Processing image for ${userId}...");
             const form = new FormData();
             form.append('file', file.buffer, { filename: file.originalname });
             
