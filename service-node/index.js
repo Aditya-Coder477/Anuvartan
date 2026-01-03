@@ -371,9 +371,6 @@ app.post('/api/chat/message', upload.single('image'), async (req, res) => {
             // Call Python AI Service
             let aiResponse;
             try {
-                // OLD (Local)
-// const aiRes = await axios.post('http://localhost:8000/predict/wound', form...
-
 // NEW (Cloud - Dynamic)
 const AI_SERVICE_URL = process.env.AI_SERVICE_URL || 'http://localhost:8000';
 const aiRes = await axios.post(`${AI_SERVICE_URL}/predict/wound`, form...
