@@ -474,7 +474,7 @@ const aiRes = await axios.post(AI_SERVICE_URL + '/predict/wound', form, {
         };
 
         // UPDATE FIRESTORE
-        // We update `today_aura.transcript` to show in Nurse Dashboard
+        // We update today_aura.transcript to show in Nurse Dashboard
         await docRef.update({
             "today_aura.transcript": admin.firestore.FieldValue.arrayUnion(userMsgObj, botMsgObj)
         });
