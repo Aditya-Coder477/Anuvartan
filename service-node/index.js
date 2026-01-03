@@ -280,7 +280,7 @@ If patient asks you to diagnose:
 If you're unsure about a symptom:
 - Ask more clarifying questions
 - Default to: "This is important to tell your doctor about"
-`
+`;
 
 // --- API ENDPOINTS ---
 
