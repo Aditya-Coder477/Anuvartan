@@ -390,7 +390,7 @@ const aiRes = await axios.post(AI_SERVICE_URL + '/predict/wound', form, {
             const aiMsg = {
                 from: "AURA",
                 time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                text: `[Image Analysis] Status: ${status} (Risk: ${risk_score}%).`
+                text:`[Image Analysis] Status:${status} (Risk: ${risk_score}%).`
             };
             
             // Update DB (Photo + Transcript + Risk)
