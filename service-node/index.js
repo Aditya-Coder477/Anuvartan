@@ -511,6 +511,6 @@ app.post('/api/chat/message', upload.single('image'), async (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`✅ Backend running on https://anuvartan-intelli.onrender.com/`);
+    console.log(`✅ Backend running on http://localhost:${PORT}`);
     console.log(`📊 Mode: ${dbActive ? "PERSISTENT (Firestore)" : "IN-MEMORY (Fallback)"}`);
 });
