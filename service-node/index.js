@@ -280,17 +280,7 @@ If patient asks you to diagnose:
 If you're unsure about a symptom:
 - Ask more clarifying questions
 - Default to: "This is important to tell your doctor about"
-
-=== PERFORMANCE METRICS (For Your Team) ===
-
-Track these to verify the model is working:
-- Patient adherence: % of daily check-ins completed
-- Early detection: Hours from symptom onset to alert sent
-- False positives: % of alerts that didn't need nurse/doctor intervention
-- Patient satisfaction: Rating of chatbot interaction (1-5 scale)
-- Accuracy of wound description: Compare AI description vs nurse assessment
-
----
+`
 
 // --- API ENDPOINTS ---
 
