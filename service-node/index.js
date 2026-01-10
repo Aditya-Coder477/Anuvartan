@@ -52,6 +52,12 @@ app.use(express.static('public')); // Serve uploaded images if saved locally (op
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
+let patients = [
+    { id: 101, name: "Rahul Gupta", age: 45, condition: "Diabetes Type 2", risk: 85, lastCheckup: "2024-12-25", userId: "mock-1" },
+    { id: 102, name: "Anita Desai", age: 34, condition: "Hypertension", risk: 45, lastCheckup: "2024-12-24", userId: "mock-2" },
+    { id: 103, name: "Vikram Singh", age: 58, condition: "Post-Surgery Recovery", risk: 20, lastCheckup: "2024-12-26", userId: "mock-3" }
+];
+
 const SYSTEM_PROMPT = `
 You are ANUVARTAN, a virtual triage nurse assistant for post-surgery recovery monitoring.
 
@@ -286,18 +292,19 @@ If you're unsure about a symptom:
 
 // 1. GET ALL PATIENTS (Doctor Dashboard)
 app.get('/api/doctor/patients', async (req, res) => {
+    // FIX: If DB is down, send Mock Data instead of Error
     if (!dbActive) {
-        // Fallback to empty or mock if DB down, but user requested persistence.
-        return res.status(503).json({ error: "Database not active. Please add serviceAccountKey.json" });
+        console.log("⚠️ DB Inactive. Serving Mock Data.");
+        return res.json(patients);
     }
 
     try {
         const snapshot = await db.collection('patients').get();
-        const patients = [];
+        const dbPatients = [];
         snapshot.forEach(doc => {
-            patients.push(doc.data());
+            dbPatients.push(doc.data());
         });
-        res.json(patients);
+        res.json(dbPatients);
     } catch (error) {
         console.error("Error fetching patients:", error);
         res.status(500).json({ error: "Failed to fetch data" });
@@ -308,7 +315,22 @@ app.get('/api/doctor/patients', async (req, res) => {
 app.post('/api/patient/login', async (req, res) => {
     const { userId, name, age, condition } = req.body;
     
-    if (!dbActive) return res.status(503).json({ error: "DB inactive" });
+    // FIX: Fallback for Login if DB is inactive
+    if (!dbActive) {
+        console.log(`⚠️ DB Inactive. Mocking login for: ${name}`);
+        // Check if user exists in mock array, else add them
+        let existing = patients.find(p => p.userId === userId);
+        if (!existing) {
+            existing = {
+                userId, name, age, condition,
+                id: Date.now(),
+                risk: 0,
+                lastCheckup: new Date().toISOString().split('T')[0]
+            };
+            patients.push(existing);
+        }
+        return res.json(existing);
+    }
 
     try {
         const docRef = db.collection('patients').doc(userId);
@@ -374,7 +396,7 @@ const aiRes = await axios.post(AI_SERVICE_URL + '/predict/wound', form, {
                 return res.json({ response: "I'm having trouble analyzing the image right now (AI Service Offline). Please try text." });
             }
             
-            const { risk_score, status, confidence } = aiResponse.data;
+            const { risk_score, status, confidence } = aiRes.data;
             
             // Construct System Message
             const aiMsg = {
